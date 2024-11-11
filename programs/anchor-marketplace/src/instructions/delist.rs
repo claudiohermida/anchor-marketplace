@@ -4,16 +4,13 @@ use anchor_spl::{
     token_interface::{
         close_account, mint_to, transfer_checked, CloseAccount, Mint, MintTo, TokenAccount,
         TokenInterface, TransferChecked,
-    }
+    },
 };
 
 use crate::state::{Listing, Marketplace};
 
 #[derive(Accounts)]
 pub struct Delist<'info> {
-    #[account(mut)]
-    pub taker: Signer<'info>,
-
     #[account(mut)]
     pub maker: SystemAccount<'info>,
 
@@ -22,6 +19,7 @@ pub struct Delist<'info> {
         bump = marketplace.bump
     )]
     pub marketplace: Account<'info, Marketplace>,
+
     pub maker_mint: InterfaceAccount<'info, Mint>,
     #[account(
         mut,
@@ -42,9 +40,6 @@ pub struct Delist<'info> {
     )]
     pub maker_ata: InterfaceAccount<'info, TokenAccount>,
 
-    pub collection_mint: InterfaceAccount<'info, Mint>,
-
-    pub associated_token_program: Program<'info, AssociatedToken>,
     pub system_program: Program<'info, System>,
     pub token_program: Interface<'info, TokenInterface>,
 }
