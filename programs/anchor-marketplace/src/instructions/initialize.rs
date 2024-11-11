@@ -42,7 +42,10 @@ pub struct Initialize<'info> {
 
 impl<'info> Initialize<'info> {
     pub fn init(&mut self, name: String, fee: u16, bumps: &InitializeBumps) -> Result<()>{
-        require!(name.len() > 0 && name.len() < 4 + 33, MarketplaceError::NameToLong);
+        // require!(name.len() > 0 && name.len() < 4 + 33, MarketplaceError::NameToLong);
+        require!(!name.is_empty() && name.len() < 4 + 33, MarketplaceError::NameToLong);
+        // fee must be at most 10000 basis points
+        require!(fee >= 0 && fee <= 10000, MarketplaceError::FeeTooHigh);
 
         self.marketplace.set_inner(Marketplace {
             admin: self.admin.key(),
